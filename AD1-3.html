@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksi Kuiz Kebudayaan Malaysia JKKN</title>
+    <style>
+        :root {
+            --primary-color: #0d47a1;
+            --secondary-color: #e65100;
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --white: #ffffff;
+            --correct-color: #2e7d32;
+            --incorrect-color: #c62828;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 15px;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Tabs Navigation */
+        .tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 10px;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--secondary-color);
+            color: var(--white);
+        }
+
+        /* Tab Content Box */
+        .tab-content {
+            display: none;
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Image Styling */
+        .nota-img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        /* Infographic/Summary Styling */
+        .infografik-box {
+            background-color: #e3f2fd;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .infografik-box h2 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .infografik-box ul {
+            list-style-type: none;
+        }
+
+        .infografik-box li {
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .infografik-box li::before {
+            content: "•";
+            color: var(--secondary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        .keyword {
+            font-weight: bold;
+            color: #b71c1c;
+        }
+
+        /* Quiz Section Styling */
+        .quiz-section h3 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+            color: #424242;
+        }
+
+        .question-card {
+            background-color: #fafafa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: block;
+            padding: 10px;
+            background-color: var(--white);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #eee;
+        }
+
+        .option-label input {
+            margin-right: 10px;
+        }
+
+        .check-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .check-btn:hover {
+            background-color: #0a3578;
+        }
+
+        .feedback-box {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 4px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback-box.correct {
+            display: block;
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--correct-color);
+            color: var(--correct-color);
+        }
+
+        .feedback-box.incorrect {
+            display: block;
+            background-color: #ffebee;
+            border-left: 4px solid var(--incorrect-color);
+            color: var(--incorrect-color);
+        }
+
+        /* Responsive Optimization */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            .tab-btn { font-size: 0.8rem; padding: 10px 5px; }
+            .infografik-box h2 { font-size: 1.2rem; }
+            .question-text { font-size: 0.95rem; }
+            .option-label { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Koleksi Latihan Kuiz Kebudayaan JKKN</h1>
+        <p>Bahan Ulang Kaji Interaktif Mesra Telefon Pintar</p>
+    </header>
+
+    <div class="container">
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'topik1')">Adat Bapukung</button>
+            <button class="tab-btn" onclick="openTab(event, 'topik2')">Menyambut Menantu</button>
+            <button class="tab-btn" onclick="openTab(event, 'topik3')">Tarian Alai Bubu</button>
+        </div>
+
+        <div id="topik1" class="tab-content active">
+            <img src="bapukung.jpg" alt="Gambar Adat Bapukung" class="nota-img">
+
+            <div class="infografik-box">
+                <h2>Infografik: Adat Bapukung (Masyarakat Banjar Perak)</h2>
+                <ul>
+                    <li><span class="keyword">Etnik & Lokasi:</span> Diamalkan oleh masyarakat <span class="keyword">Melayu Banjar</span> di daerah <span class="keyword">Bagan Serai, Perak</span>.</li>
+                    <li><span class="keyword">Definisi:</span> Adat tradisional menidurkan bayi dalam <span class="keyword">posisi duduk</span> dengan badan diikat kemas menggunakan kain hingga paras tengkuk di dalam buaian.</li>
+                    <li><span class="keyword">Tujuan Teknikal:</span> Memberikan ketenteraman kepada bayi berusia <span class="keyword">3 hingga 4 bulan</span> yang kerap meragam akibat perut kembung atau perubahan persekitaran.</li>
+                    <li><span class="keyword">Falsafah Budaya & Agama:</span> Melambangkan harapan ibu bapa agar anak menjadi soleh/solehah melalui alunan <span class="keyword">Lagu Bapukung</span> yang sarat dengan <span class="keyword">selawat</span> serta kisah sejarah kehidupan Nabi Muhammad SAW.</li>
+                    <li><span class="keyword">Peralatan Utama:</span> Buaian (kain sarung/batik), tali, dan <span class="keyword">Kain Haduk atau Ijuk</span> sebagai pengikat selamat pada leher/badan bayi.</li>
+                    <li><span class="keyword">Waktu Pelaksanaan:</span> Diadakan pada waktu siang bersempena konsep <span class="keyword">Qailulah</span> (tidur sebentar 10-30 minit sebelum waktu Zohor) yang merupakan amalan Sunnah.</li>
+                </ul>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Kuiz Interaktif: Adat Bapukung (20 Soalan)</h3>
+                
+                <div class="question-card" id="q1_1">
+                    <p class="question-text">1. Di manakah kawasan lokaliti utama amalan adat Bapukung di negeri Perak?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_1" value="A"> A. Kuala Kangsar</label>
+                        <label class="option-label"><input type="radio" name="ans1_1" value="B"> B. Bagan Serai</label>
+                        <label class="option-label"><input type="radio" name="ans1_1" value="C"> C. Teluk Intan</label>
+                        <label class="option-label"><input type="radio" name="ans1_1" value="D"> D. Parit Buntar</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_1', 'B', 'Betul! Adat ini popular dalam kalangan masyarakat Melayu Banjar yang kebanyakannya menetap di daerah Bagan Serai, Perak.', 'Salah. Jawapan yang betul ialah B. Adat Bapukung sangat popular di daerah Bagan Serai, Perak.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q1_2">
+                    <p class="question-text">2. Apakah nama etnik yang mengamalkan tradisi Bapukung ini?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_2" value="A"> A. Melayu Jawa</label>
+                        <label class="option-label"><input type="radio" name="ans1_2" value="B"> B. Melayu Bugis</label>
+                        <label class="option-label"><input type="radio" name="ans1_2" value="C"> C. Melayu Banjar</label>
+                        <label class="option-label"><input type="radio" name="ans1_2" value="D"> D. Melayu Minang</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_2', 'C', 'Betul! Amalan ini merupakan adat tradisional menidurkan bayi dalam masyarakat Melayu Banjar.', 'Salah. Jawapan yang betul ialah C. Tradisi ini mendasari falsafah budaya masyarakat Melayu Banjar.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q1_3">
+                    <p class="question-text">3. Bagaimanakah posisi fizikal bayi semasa diletakkan di dalam buaian adat Bapukung?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_3" value="A"> A. Menelentang lurus</label>
+                        <label class="option-label"><input type="radio" name="ans1_3" value="B"> B. Meniarap selesa</label>
+                        <label class="option-label"><input type="radio" name="ans1_3" value="C"> C. Posisi duduk dengan badan diikat kemas</label>
+                        <label class="option-label"><input type="radio" name="ans1_3" value="D"> D. Mengiring ke kanan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_3', 'C', 'Betul! Bayi ditidurkan dalam posisi duduk dengan badan diikat menggunakan kain hingga paras tengkuk.', 'Salah. Jawapan yang betul ialah C. Posisi bayi adalah duduk dengan badan diikat kemas.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q1_4">
+                    <p class="question-text">4. Apakah peralatan khas yang digunakan untuk mengikat leher/badan bayi supaya posisinya selamat?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_4" value="A"> A. Kain Haduk atau Ijuk</label>
+                        <label class="option-label"><input type="radio" name="ans1_4" value="B"> B. Tali nylon berwarna</label>
+                        <label class="option-label"><input type="radio" name="ans1_4" value="C"> C. Selendang sutera</label>
+                        <label class="option-label"><input type="radio" name="ans1_4" value="D"> D. Kain songket lama</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_4', 'A', 'Betul! Kain Haduk atau Ijuk digunakan sebagai pengikat pada leher bayi agar kedudukannya selamat.', 'Salah. Jawapan yang betul ialah A iaitu Kain Haduk atau Ijuk.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q1_5">
+                    <p class="question-text">5. Pada usia berapakah adat Bapukung ini secara teknikalnya mula berfungsi untuk menenteramkan bayi?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_5" value="A"> A. 1 hingga 2 minggu</label>
+                        <label class="option-label"><input type="radio" name="ans1_5" value="B"> B. 3 hingga 4 bulan</label>
+                        <label class="option-label"><input type="radio" name="ans1_5" value="C"> C. 8 hingga 9 bulan</label>
+                        <label class="option-label"><input type="radio" name="ans1_5" value="D"> D. Selepas setahun</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_5', 'B', 'Betul! Tradisi ini berfungsi memberikan ketenteraman kepada bayi menjangkau usia 3 atau 4 bulan.', 'Salah. Jawapan yang betul ialah B iaitu 3 hingga 4 bulan.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q1_6">
+                    <p class="question-text">6. Apakah punca fizikal utama yang membuatkan bayi usia 3-4 bulan kerap menangis menurut nota?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_6" value="A"> A. Tumbuh gigi baru</label>
+                        <label class="option-label"><input type="radio" name="ans1_6" value="B"> B. Perut mudah mengembung / adaptasi persekitaran</label>
+                        <label class="option-label"><input type="radio" name="ans1_6" value="C"> C. Lapar di tengah hari</label>
+                        <label class="option-label"><input type="radio" name="ans1_6" value="D"> D. Cuaca terlalu sejuk</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_6', 'B', 'Betul! Faktor ketidakselesaan perut mengembung dan adaptasi mengganggu tidur bayi.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_7">
+                    <p class="question-text">7. Apakah elemen keagamaan yang diselang-selikan semasa mendendangkan Lagu Bapukung?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_7" value="A"> A. Alunan zikir nasyid</label>
+                        <label class="option-label"><input type="radio" name="ans1_7" value="B"> B. Selawat ke atas junjungan Nabi Muhammad SAW</label>
+                        <label class="option-label"><input type="radio" name="ans1_7" value="C"> C. Bacaan ayat al-Kursi</label>
+                        <label class="option-label"><input type="radio" name="ans1_7" value="D"> D. Laungan azan subuh</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_7', 'B', 'Betul! Dendangan lagu diselang-seli dengan selawat ke atas Nabi SAW.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_8">
+                    <p class="question-text">8. Apakah konsep masa tidur pertengahan siang yang melandasi falsafah waktu adat Bapukung?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_8" value="A"> A. Istirahat</label>
+                        <label class="option-label"><input type="radio" name="ans1_8" value="B"> B. Qailulah</label>
+                        <label class="option-label"><input type="radio" name="ans1_8" value="C"> C. Khauf</label>
+                        <label class="option-label"><input type="radio" name="ans1_8" value="D"> D. Syuruk</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_8', 'B', 'Betul! Qailulah bermaksud tidur sebentar pada pertengahan siang hari sebelum Zohor.', 'Salah. Jawapan betul ialah B (Qailulah).')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_9">
+                    <p class="question-text">9. Berapakah tempoh masa yang disarankan untuk tidur Qailulah mengikut sunnah?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_9" value="A"> A. 1 hingga 2 jam</label>
+                        <label class="option-label"><input type="radio" name="ans1_9" value="B"> B. 10 hingga 30 minit</label>
+                        <label class="option-label"><input type="radio" name="ans1_9" value="C"> C. 5 minit sahaja</label>
+                        <label class="option-label"><input type="radio" name="ans1_9" value="D"> D. Tepat 60 minit</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_9', 'B', 'Betul! Waktu tidur Qailulah adalah selama 10 hingga 30 minit sebelum solat Zohor.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_10">
+                    <p class="question-text">10. Siapakah yang biasanya menyanyikan Lagu Bapukung secara beramai-ramai semasa adat berlangsung?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_10" value="A"> A. Kanak-kanak lelaki</label>
+                        <label class="option-label"><input type="radio" name="ans1_10" value="B"> B. Kumpulan pendendang wanita / ibu-ibu tetamu</label>
+                        <label class="option-label"><input type="radio" name="ans1_10" value="C"> C. Pawang atau Bomoh kampung</label>
+                        <label class="option-label"><input type="radio" name="ans1_10" value="D"> D. Ketua adat daerah</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_10', 'B', 'Betul! Lagu didendangkan oleh sekumpulan wanita/ibu-ibu yang menjadi tetamu upacara.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_11">
+                    <p class="question-text">11. Lagu Bapukung bertindak sebagai media penyampaian informasi penting tentang apa?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_11" value="A"> A. Sejarah pembukaan daerah Bagan Serai</label>
+                        <label class="option-label"><input type="radio" name="ans1_11" value="B"> B. Kisah sejarah kehidupan Nabi Muhammad SAW & nilai moral</label>
+                        <label class="option-label"><input type="radio" name="ans1_11" value="C"> C. Asal usul keturunan raja-raja Perak</label>
+                        <label class="option-label"><input type="radio" name="ans1_11" value="D"> D. Petua perubatan tradisional herba</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_11', 'B', 'Betul! Lagu ini menyampaikan maklumat sejarah Nabi Muhammad SAW dan panduan akhlak Islam.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_12">
+                    <p class="question-text">12. Apakah kain yang lazimnya digunakan untuk membuat buaian utama?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_12" value="A"> A. Kain Sarung atau kain batik</label>
+                        <label class="option-label"><input type="radio" name="ans1_12" value="B"> B. Kain belacu putih</label>
+                        <label class="option-label"><input type="radio" name="ans1_12" value="C"> C. Kain kanvas tebal</label>
+                        <label class="option-label"><input type="radio" name="ans1_12" value="D"> D. Kain net atau jaring</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_12', 'A', 'Betul! Peralatan utama adalah buaian daripada kain sarung atau kain batik.', 'Salah. Jawapan betul ialah A.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_13">
+                    <p class="question-text">13. Di manakah kedudukan kedua-dua kaki bayi semasa berada dalam buaian Pukong?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_13" value="A"> A. Dilipat bersila di dalam kain</label>
+                        <label class="option-label"><input type="radio" name="ans1_13" value="B"> B. Dibiarkan terlunjur keluar dari buaian</label>
+                        <label class="option-label"><input type="radio" name="ans1_13" value="C"> C. Diangkat tinggi ke atas tali</label>
+                        <label class="option-label"><input type="radio" name="ans1_13" value="D"> D. Diikat bersama-sama dada</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_13', 'B', 'Betul! Kedua-dua kakinya dibiarkan terlunjur keluar dari buaian.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_14">
+                    <p class="question-text">14. Apakah fungsi utama ikatan Kain Haduk/Ijuk pada badan bayi?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_14" value="A"> A. Untuk menghalang bayi daripada berpeluh</label>
+                        <label class="option-label"><input type="radio" name="ans1_14" value="B"> B. Memastikan posisi bayi kekal duduk dan selamat daripada jatuh</label>
+                        <label class="option-label"><input type="radio" name="ans1_14" value="C"> C. Sebagai perhiasan semata-mata</label>
+                        <label class="option-label"><input type="radio" name="ans1_14" value="D"> D. Untuk menutup muka bayi</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_14', 'B', 'Betul! Ia memastikan kedudukan tubuh bayi disokong dengan selamat.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_15">
+                    <p class="question-text">15. Dialek bahasa apakah yang digunakan dalam lirik lagu Bapukung?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_15" value="A"> A. Dialek Perak Utara</label>
+                        <label class="option-label"><input type="radio" name="ans1_15" value="B"> B. Dialek Banjar</label>
+                        <label class="option-label"><input type="radio" name="ans1_15" value="C"> C. Dialek Kelantan</label>
+                        <label class="option-label"><input type="radio" name="ans1_15" value="D"> D. Bahasa Melayu standard</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_15', 'B', 'Betul! Lagu didendangkan dalam dialek Banjar asli.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_16">
+                    <p class="question-text">16. Di manakah kedudukan struktur utama buaian berhias digantung?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_16" value="A"> A. Di luar pintu pagar rumah</label>
+                        <label class="option-label"><input type="radio" name="ans1_16" value="B"> B. Di tiang bumbung atau cangkuk siling tengah rumah</label>
+                        <label class="option-label"><input type="radio" name="ans1_16" value="C"> C. Di dalam kamar tidur utama</label>
+                        <label class="option-label"><input type="radio" name="ans1_16" value="D"> D. Di tepi tingkap dapur</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_16', 'B', 'Betul! Tali diikat dari tiang bumbung atau cangkuk siling tengah rumah.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_17">
+                    <p class="question-text">17. Apakah langkah tatacara pertama sebaik sahaja buaian disediakan di tengah rumah?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_17" value="A"> A. Terus mengikat leher bayi</label>
+                        <label class="option-label"><input type="radio" name="ans1_17" value="B"> B. Memasukkan bayi ke dalam buaian dalam posisi berbaring</label>
+                        <label class="option-label"><input type="radio" name="ans1_17" value="C"> C. Menyanyi lagu Bapukung terlebih dahulu</label>
+                        <label class="option-label"><input type="radio" name="ans1_17" value="D"> D. Membakar hidangan makanan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_17', 'B', 'Betul! Langkah pertama adalah memasukkan bayi pada posisi berbaring sebelum disesuaikan ke posisi duduk.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_18">
+                    <p class="question-text">18. Apakah jenis kualiti ikatan Kain Haduk pada tubuh bayi?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_18" value="A"> A. Sangat ketat hingga tidak boleh bernafas</label>
+                        <label class="option-label"><input type="radio" name="ans1_18" value="B"> B. Ikatan longgar tetapi dipastikan dapat menyokong kedudukan badan</label>
+                        <label class="option-label"><input type="radio" name="ans1_18" value="C"> C. Hanya menggunakan gam kain</label>
+                        <label class="option-label"><input type="radio" name="ans1_18" value="D"> D. Menggunakan simpul mati yang kekal</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_18', 'B', 'Betul! Kain mengikat dengan ikatan longgar tetapi menyokong tubuh dengan selamat.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_19">
+                    <p class="question-text">19. Upacara diakhiri dengan aktiviti apa bagi meraikan tetamu yang hadir?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_19" value="A"> A. Pertandingan menari</label>
+                        <label class="option-label"><input type="radio" name="ans1_19" value="B"> B. Bacaan doa selamat dan sajian hidangan makanan</label>
+                        <label class="option-label"><input type="radio" name="ans1_19" value="C"> C. Upacara mandi bunga</label>
+                        <label class="option-label"><input type="radio" name="ans1_19" value="D"> D. Pembahagian wang saguhati</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_19', 'B', 'Betul! Akhir upacara ditutup dengan doa selamat dan jamuan makan.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q1_20">
+                    <p class="question-text">20. Selain aspek kesihatan dan agama, apakah fungsi sosial tradisi Bapukung dalam komuniti?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans1_20" value="A"> A. Mengumpul dana persatuan</label>
+                        <label class="option-label"><input type="radio" name="ans1_20" value="B"> B. Memperkuatkan rasa kebersamaan dalam keluarga dan komuniti</label>
+                        <label class="option-label"><input type="radio" name="ans1_20" value="C"> C. Melantik ketua kampung baru</label>
+                        <label class="option-label"><input type="radio" name="ans1_20" value="D"> D. Mengasingkan diri daripada masyarakat luar</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q1_20', 'B', 'Betul! Tradisi ini memperkuatkan kebersamaan komuniti serta memastikan budaya terus hidup.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="topik2" class="tab-content">
+            <div class="infografik-box">
+                <h2>Infografik: Adat Menyambut Menantu Perempuan (Kelantan)</h2>
+                <ul>
+                    <li><span class="keyword">Definisi Istilah:</span> Berasal daripada tindakan wakil pihak lelaki menjemput dan mengambil pengantin perempuan selepas berada beberapa hari di rumah pihak perempuan. Berperanan <span class="keyword">mengalu-alukan ahli baharu</span> dalam keluarga.</li>
+                    <li><span class="keyword">Sifat Majlis:</span> Dilaksanakan secara <span class="keyword">tertutup</span>, selaras dengan ajaran Islam dan hanya melibatkan ahli keluarga terdekat sahaja.</li>
+                    <li><span class="keyword">Tujuan & Peranan:</span> Berfungsi khusus demi menjamin dan memastikan <span class="keyword">hubungan silaturrahim</span> antara kedua-dua belah pihak pengantin terjalin erat.</li>
+                    <li><span class="keyword">Istilah Tempatan:</span> Proses perarakan rombongan waris dari rumah pengantin perempuan ke rumah pengantin lelaki disebut istilah <span class="keyword">blarok</span> (berarak).</li>
+                    <li><span class="keyword">Atur Cara:</span> Dimulai dengan <span class="keyword">bacaan doa kesyukuran</span> diikuti dengan aktiviti jamuan makan bersama.</li>
+                </ul>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Kuiz Interaktif: Menyambut Menantu (20 Soalan)</h3>
+                
+                <div class="question-card" id="q2_1">
+                    <p class="question-text">1. Adat menyambut menantu perempuan mengikut nota rujukan terkenal di negeri mana?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_1" value="A"> A. Terengganu</label>
+                        <label class="option-label"><input type="radio" name="ans2_1" value="B"> B. Kelantan</label>
+                        <label class="option-label"><input type="radio" name="ans2_1" value="C"> C. Johor</label>
+                        <label class="option-label"><input type="radio" name="ans2_1" value="D"> D. Kedah</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_1', 'B', 'Betul! Adat Menyambut Menantu Perempuan dalam nota difokuskan di negeri Kelantan.', 'Salah. Jawapan betul ialah B iaitu Kelantan.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_2">
+                    <p class="question-text">2. Apakah maksud utama istilah 'menyambut menantu'?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_2" value="A"> A. Menguji kemahiran memasak pengantin</label>
+                        <label class="option-label"><input type="radio" name="ans2_2" value="B"> B. Mengalu-alukan kehadiran pengantin perempuan ke dalam keluarga sebagai ahli baharu</label>
+                        <label class="option-label"><input type="radio" name="ans2_2" value="C"> C. Menyerahkan hantaran perkahwinan terakhir</label>
+                        <label class="option-label"><input type="radio" name="ans2_2" value="D"> D. Membatalkan ikatan pertunangan lama</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_2', 'B', 'Betul! Maknanya adalah mengalu-alukan pengantin perempuan sebagai ahli keluarga baru.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_3">
+                    <p class="question-text">3. Mengapakah majlis adat ini umumnya dilaksanakan secara tertutup?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_3" value="A"> A. Kerana kekurangan dana kewangan</label>
+                        <label class="option-label"><input type="radio" name="ans2_3" value="B"> B. Selaras dengan tuntutan ajaran Islam</label>
+                        <label class="option-label"><input type="radio" name="ans2_3" value="C"> C. Larangan undang-undang istana</label>
+                        <label class="option-label"><input type="radio" name="ans2_3" value="D"> D. Mengikut nasihat bomoh</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_3', 'B', 'Betul! Majlis diadakan secara tertutup selaras dengan ajaran Islam.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_4">
+                    <p class="question-text">4. Siapakah yang membentuk kelompok utama jemputan dalam majlis adat ini?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_4" value="A"> A. Seluruh penduduk mukim</label>
+                        <label class="option-label"><input type="radio" name="ans2_4" value="B"> B. Ahli keluarga terdekat sahaja</label>
+                        <label class="option-label"><input type="radio" name="ans2_4" value="C"> C. Rakan sekerja pejabat</label>
+                        <label class="option-label"><input type="radio" name="ans2_4" value="D"> D. Pelancong luar negara</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_4', 'B', 'Betul! Majlis tertutup ini hanya melibatkan keluarga terdekat sahaja.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_5">
+                    <p class="question-text">5. Majlis adat menyambut menantu dimulakan dengan upacara apa?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_5" value="A"> A. Persembahan dikir barat</label>
+                        <label class="option-label"><input type="radio" name="ans2_5" value="B"> B. Bacaan doa kesyukuran</label>
+                        <label class="option-label"><input type="radio" name="ans2_5" value="C"> C. Pertukaran keris sakti</label>
+                        <label class="option-label"><input type="radio" name="ans2_5" value="D"> D. Potong pulut kuning</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_5', 'B', 'Betul! Majlis bermula dengan bacaan doa kesyukuran.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_6">
+                    <p class="question-text">6. Apakah tujuan sosial dan emosi utama pelaksanaan adat menyambut menantu?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_6" value="A"> A. Menunjuk-nunjuk kekayaan material</label>
+                        <label class="option-label"><input type="radio" name="ans2_6" value="B"> B. Menjamin silaturrahim antara kedua-dua keluarga terjalin erat</label>
+                        <label class="option-label"><input type="radio" name="ans2_6" value="C"> C. Menentukan pembahagian harta pusaka</label>
+                        <label class="option-label"><input type="radio" name="ans2_6" value="D"> D. Menamatkan persaingan politik</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_6', 'B', 'Betul! Tujuannya memastikan hubungan silaturrahim terjalin erat.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_7">
+                    <p class="question-text">7. Bilakah adat menyambut menantu ini kebiasaannya diadakan?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_7" value="A"> A. Sebulan sebelum majlis akad nikah</label>
+                        <label class="option-label"><input type="radio" name="ans2_7" value="B"> B. Beberapa hari selepas persandingan di rumah pengantin perempuan</label>
+                        <label class="option-label"><input type="radio" name="ans2_7" value="C"> C. Serentak pada waktu pagi hari pertunangan</label>
+                        <label class="option-label"><input type="radio" name="ans2_7" value="D"> D. Tepat pada malam sambutan Tahun Baru</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_7', 'B', 'Betul! Diadakan beberapa hari selepas persandingan di rumah perempuan.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_8">
+                    <p class="question-text">8. Apakah istilah dialek tempatan Kelantan yang digunakan untuk menggambarkan perbuatan berarak?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_8" value="A"> A. Berjalan</label>
+                        <label class="option-label"><input type="radio" name="ans2_8" value="B"> B. Blarok</label>
+                        <label class="option-label"><input type="radio" name="ans2_8" value="C"> C. Melenggang</label>
+                        <label class="option-label"><input type="radio" name="ans2_8" value="D"> D. Usung</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_8', 'B', 'Betul! Rombongan akan blarok (berarak) menuju ke rumah lelaki.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_9">
+                    <p class="question-text">9. Siapakah yang bertindak mengiringi pengantin perempuan semasa proses berarak ke rumah lelaki?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_9" value="A"> A. Rakan sekampung yang muda</label>
+                        <label class="option-label"><input type="radio" name="ans2_9" value="B"> B. Waris-waris terdekat pengantin perempuan</label>
+                        <label class="option-label"><input type="radio" name="ans2_9" value="C"> C. Kumpulan pemain rebana</label>
+                        <label class="option-label"><input type="radio" name="ans2_9" value="D"> D. Wakil rasmi pejabat agama</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_9', 'B', 'Betul! Pihak perempuan diiringi oleh waris terdekat.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_10">
+                    <p class="question-text">10. Di manakah destinasi akhir perarakan adat menyambut menantu?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_10" value="A"> A. Balai raya kampung</label>
+                        <label class="option-label"><input type="radio" name="ans2_10" value="B"> B. Rumah pengantin lelaki</label>
+                        <label class="option-label"><input type="radio" name="ans2_10" value="C"> C. Masjid mukim</label>
+                        <label class="option-label"><input type="radio" name="ans2_10" value="D"> D. Kediaman ketua adat</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_10', 'B', 'Betul! Destinasinya adalah ke rumah pengantin lelaki.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q2_11">
+                    <p class="question-text">11. Apakah status amalan adat menyambut menantu pada hari ini berdasarkan nota?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_11" value="A"> A. Sudah pupus sepenuhnya</label>
+                        <label class="option-label"><input type="radio" name="ans2_11" value="B"> B. Masih diamalkan sehingga kini</label>
+                        <label class="option-label"><input type="radio" name="ans2_11" value="C"> C. Hanya diamalkan oleh kerabat diraja</label>
+                        <label class="option-label"><input type="radio" name="ans2_11" value="D"> D. Dilarang oleh majlis agama</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_11', 'B', 'Betul! Adat ini terbukti masih diamalkan sehingga kini.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_12">
+                    <p class="question-text">12. Siapakah yang menjadi wakil utama datang menjemput pengantin perempuan pada mulanya?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_12" value="A"> A. Kanak-kanak lelaki kecil</label>
+                        <label class="option-label"><input type="radio" name="ans2_12" value="B"> B. Beberapa orang perempuan wakil pihak lelaki</label>
+                        <label class="option-label"><input type="radio" name="ans2_12" value="C"> C. Rombongan bapa saudara sahaja</label>
+                        <label class="option-label"><input type="radio" name="ans2_12" value="D"> D. Sahabat karib pengantin lelaki</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_12', 'B', 'Betul! Dibuat oleh beberapa orang perempuan wakil pengantin lelaki.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_13">
+                    <p class="question-text">13. Berapa lamakah tempoh pengantin berada di rumah perempuan sebelum dijemput?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_13" value="A"> A. Tepat setahun</label>
+                        <label class="option-label"><input type="radio" name="ans2_13" value="B"> B. Selama beberapa hari</label>
+                        <label class="option-label"><input type="radio" name="ans2_13" value="C"> C. Hanya satu jam sahaja</label>
+                        <label class="option-label"><input type="radio" name="ans2_13" value="D"> D. Setengah bulan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_13', 'B', 'Betul! Pengantin berada di sana selama beberapa hari sebelum dijemput.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_14">
+                    <p class="question-text">14. Istilah 'sambut menantu' terbit daripada perbuatan apa secara fizikal?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_14" value="A"> A. Memberi hadiah barang kemas</label>
+                        <label class="option-label"><input type="radio" name="ans2_14" value="B"> B. Menjemput dan mengambil pengantin perempuan oleh wakil pihak lelaki</label>
+                        <label class="option-label"><input type="radio" name="ans2_14" value="C"> C. Menyambut bayi yang baru lahir</label>
+                        <label class="option-label"><input type="radio" name="ans2_14" value="D"> D. Menandatangani sijil perkahwinan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_14', 'B', 'Betul! Ia terbit daripada aktiviti menjemput dan mengambil pengantin.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_15">
+                    <p class="question-text">15. Di manakah hidangan jamuan makan utama disajikan kepada rombongan pengantin perempuan?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_15" value="A"> A. Di restoran hotel mewah</label>
+                        <label class="option-label"><input type="radio" name="ans2_15" value="B"> B. Di rumah pengantin lelaki</label>
+                        <label class="option-label"><input type="radio" name="ans2_15" value="C"> C. Di pinggir jalan kampung</label>
+                        <label class="option-label"><input type="radio" name="ans2_15" value="D"> D. Di balai polis berdekatan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_15', 'B', 'Betul! Jamuan makan dihidangkan di rumah pengantin lelaki.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_16">
+                    <p class="question-text">16. Apakah komponen utama aktiviti selepas bacaan doa kesyukuran?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_16" value="A"> A. Persembahan silat lincah</label>
+                        <label class="option-label"><input type="radio" name="ans2_16" value="B"> B. Jamuan makan untuk pengantin sekeluarga</label>
+                        <label class="option-label"><input type="radio" name="ans2_16" value="C"> C. Ucapan politik panjang</label>
+                        <label class="option-label"><input type="radio" name="ans2_16" value="D"> D. Upacara bersila tidur</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_16', 'B', 'Betul! Diikuti dengan jamuan makan yang dihidangkan.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_17">
+                    <p class="question-text">17. Mengapakah perarakan blarok dilakukan secara tertib?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_17" value="A"> A. Mengelakkan gangguan lalu lintas sahaja</label>
+                        <label class="option-label"><input type="radio" name="ans2_17" value="B"> B. Menghantar kedua-dua pengantin menghadiri adat menyambut menantu</label>
+                        <label class="option-label"><input type="radio" name="ans2_17" value="C"> C. Untuk melarikan diri daripada musuh</label>
+                        <label class="option-label"><input type="radio" name="ans2_17" value="D"> D. Mengikut arahan ketua persatuan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_17', 'B', 'Betul! Tujuannya menghantar pasangan menghadiri adat sambut menantu.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_18">
+                    <p class="question-text">18. Nilai Islam yang paling ditekankan dalam pelaksanaan bentuk majlis ini ialah apa?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_18" value="A"> A. Pembaziran wang berlebihan</label>
+                        <label class="option-label"><input type="radio" name="ans2_18" value="B"> B. Kesederhanaan dan penjagaan privasi (tertutup)</label>
+                        <label class="option-label"><input type="radio" name="ans2_18" value="C"> C. Nyanyian muzik keras</label>
+                        <label class="option-label"><input type="radio" name="ans2_18" value="D"> D. Pemilihan tarikh gerhana</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_18', 'B', 'Betul! Sifat tertutup selaras dengan konsep penjagaan nilai keharmonian Islam.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_19">
+                    <p class="question-text">19. Siapakah yang menganjurkan dan melaksanakan upacara sambutan ini?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_19" value="A"> A. Pihak pengantin perempuan</label>
+                        <label class="option-label"><input type="radio" name="ans2_19" value="B"> B. Pihak pengantin lelaki</label>
+                        <label class="option-label"><input type="radio" name="ans2_19" value="C"> C. Majlis Perbandaran Tempatan</label>
+                        <label class="option-label"><input type="radio" name="ans2_19" value="D"> D. Kumpulan penari JKKN Kelantan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_19', 'B', 'Betul! Adat ini dilaksanakan oleh pihak keluarga pengantin lelaki.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q2_20">
+                    <p class="question-text">20. Apakah intipati utama pengisian majlis ini selain makan?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans2_20" value="A"> A. Cabutan bertuah tiket</label>
+                        <label class="option-label"><input type="radio" name="ans2_20" value="B"> B. Amalan doa kesyukuran dan jalinan silaturrahim</label>
+                        <label class="option-label"><input type="radio" name="ans2_20" value="C"> C. Sesi jual beli barangan</label>
+                        <label class="option-label"><input type="radio" name="ans2_20" value="D"> D. Pertandingan busana terbaik</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q2_20', 'B', 'Betul! Intipati utamanya adalah doa kesyukuran dan mengeratkan silaturrahim.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="topik3" class="tab-content">
+            <img src="bisaya.png" alt="Gambar Tarian Alai Bubu" class="nota-img">
+
+            <div class="infografik-box">
+                <h2>Infografik: Tarian Alai Bubu (Kaum Bisaya Sabah)</h2>
+                <ul>
+                    <li><span class="keyword">Etnik & Lokaliti:</span> Milik etnik <span class="keyword">Bisaya</span> yang mendiami daerah <span class="keyword">Beaufort</span> (tebing Sungai Padas dan Sungai Klias, Sabah).</li>
+                    <li><span class="keyword">Nama Lain:</span> Terkenal dengan nama <span class="keyword">'Main Lukah'</span> dan <span class="keyword">'Bubu Mengalai'</span>. Lukah bermaksud perangkap ikan tradisional.</li>
+                    <li><span class="keyword">Sejarah & Evolusi Versi:</span>
+                        <br>• Versi 1: Mitos bubu menari lambang kesetiaan tradisi pagan (suami isteri mati masuk laut bersama).
+                        <br>• Versi 2: Pengganti Tarian Lesung (dihentikan selepas tragedi penari maut dihempap lesung).
+                    </li>
+                    <li><span class="keyword">Unsur Mistik Silam vs Status Moden:</span> Dahulu melibatkan jampi serapah, kemenyan, dan kuasa roh supranatural. Sejak tahun <span class="keyword">1980-an</span>, unsur ilmu hitam <span class="keyword">ditinggalkan sepenuhnya</span> hasil larangan Jabatan Agama Islam Sabah. Kini dipotretkan tulen sebagai seni persembahan budaya keraian sosial.</li>
+                    <li><span class="keyword">Peralatan & Muzik:</span> Bubu yang dipakaikan <span class="keyword">baju wanita</span> (simbol roh). Muzik iringan terdiri daripada gambus dan ensembel gong <span class="keyword">Bagandang</span> yang merangkumi <span class="keyword">Tagongo</span> (kulintangan), <span class="keyword">Tatawak</span> (gong kecil), dan <span class="keyword">Canang</span>.</li>
+                    <li><span class="keyword">Ciri Gerak Tari:</span> Bersifat <span class="keyword">spontan</span> mengikut interaksi penari dan audiens. Rentak laju (simbol kehadiran semangat) manakala rentak perlahan (ruang komunikasi pawang/<span class="keyword">Babalian</span>).</li>
+                </ul>
+            </div>
+
+            <div class="quiz-section">
+                <h3>Kuiz Interaktif: Tarian Alai Bubu (20 Soalan)</h3>
+                
+                <div class="question-card" id="q3_1">
+                    <p class="question-text">1. Tarian Alai Bubu merupakan tarian tradisional bagi etnik kaum apa?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_1" value="A"> A. Kadazandusun</label>
+                        <label class="option-label"><input type="radio" name="ans3_1" value="B"> B. Bisaya</label>
+                        <label class="option-label"><input type="radio" name="ans3_1" value="C"> C. Bajau Laut</label>
+                        <label class="option-label"><input type="radio" name="ans3_1" value="D"> D. Murut</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_1', 'B', 'Betul! Tarian Alai Bubu adalah salah satu tarian tradisional masyarakat etnik Bisaya.', 'Salah. Jawapan betul ialah B (Bisaya).')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_2">
+                    <p class="question-text">2. Di manakah daerah lokaliti utama penempatan etnik Bisaya di Sabah mengikut teks?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_2" value="A"> A. Kudat</label>
+                        <label class="option-label"><input type="radio" name="ans3_2" value="B"> B. Beaufort</label>
+                        <label class="option-label"><input type="radio" name="ans3_2" value="C"> C. Semporna</label>
+                        <label class="option-label"><input type="radio" name="ans3_2" value="D"> D. Sandakan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_2', 'B', 'Betul! Etnik Bisaya kebanyakannya mendiami daerah Beaufort, Sabah.', 'Salah. Jawapan betul ialah B iaitu Beaufort.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_3">
+                    <p class="question-text">3. Apakah nama lain bagi Tarian Alai Bubu?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_3" value="A"> A. Main Lukah atau Bubu Mengalai</label>
+                        <label class="option-label"><input type="radio" name="ans3_3" value="B"> B. Tarian Sumazau</label>
+                        <label class="option-label"><input type="radio" name="ans3_3" value="C"> C. Tarian Magunatip</label>
+                        <label class="option-label"><input type="radio" name="ans3_3" value="D"> D. Main Lesung Sakti</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_3', 'A', 'Betul! Dikenali juga sebagai Main Lukah dan Bubu Mengalai.', 'Salah. Jawapan betul ialah A.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_4">
+                    <p class="question-text">4. Apakah maksud perkataan 'Lukah' dalam bahasa tempatan etnik Bisaya?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_4" value="A"> A. Parang hiasan</label>
+                        <label class="option-label"><input type="radio" name="ans3_4" value="B"> B. Perangkap ikan (bubu)</label>
+                        <label class="option-label"><input type="radio" name="ans3_4" value="C"> C. Pakaian bomoh</label>
+                        <label class="option-label"><input type="radio" name="ans3_4" value="D"> D. Selendang menari</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_4', 'B', 'Betul! Lukah bermaksud alat perangkap ikan.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_5">
+                    <p class="question-text">5. Apakah nama panggilan bagi individu yang berfungsi sebagai pawang atau perantara spiritual etnik Bisaya?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_5" value="A"> A. Mudin</label>
+                        <label class="option-label"><input type="radio" name="ans3_5" value="B"> B. Bobalian / Babalian</label>
+                        <label class="option-label"><input type="radio" name="ans3_5" value="C"> C. Tok Mudim</label>
+                        <label class="option-label"><input type="radio" name="ans3_5" value="D"> D. Manang</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_5', 'B', 'Betul! Pawang komuniti Bisaya dikenali sebagai Bobalian atau Babalian.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_6">
+                    <p class="question-text">6. Mengapakah penggunaan elemen lesung dihentikan dalam sejarah versi kedua tarian?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_6" value="A"> A. Kerana lesung terlalu mahal</label>
+                        <label class="option-label"><input type="radio" name="ans3_6" value="B"> B. Tragedi ngeri penari maut dihempap lesung yang melonjak</label>
+                        <label class="option-label"><input type="radio" name="ans3_6" value="C"> C. Lesung patah dan rosak</label>
+                        <label class="option-label"><input type="radio" name="ans3_6" value="D"> D. Diperintahkan oleh sultan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_6', 'B', 'Betul! Berlaku tragedi seorang penari maut akibat dihempap lesung.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_7">
+                    <p class="question-text">7. Apakah komponen 'Salihid' yang diperkenalkan untuk menggantikan elemen lesung?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_7" value="A"> A. Batang buluh panjang</label>
+                        <label class="option-label"><input type="radio" name="ans3_7" value="B"> B. Bubu (perangkap ikan)</label>
+                        <label class="option-label"><input type="radio" name="ans3_7" value="C"> C. Topeng kayu</label>
+                        <label class="option-label"><input type="radio" name="ans3_7" value="D"> D. Tombak hiasan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_7', 'B', 'Betul! Salihid merujuk kepada bubu yang dijadikan simbol baru persembahan.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_8">
+                    <p class="question-text">8. Sejak dekad bilakah amalan jampi serapah dan ilmu hitam ditinggalkan sepenuhnya?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_8" value="A"> A. Tahun 1950-an</label>
+                        <label class="option-label"><input type="radio" name="ans3_8" value="B"> B. Tahun 1980-an</label>
+                        <label class="option-label"><input type="radio" name="ans3_8" value="C"> C. Tahun 2010-an</label>
+                        <label class="option-label"><input type="radio" name="ans3_8" value="D"> D. Baru tahun lepas</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_8', 'B', 'Betul! Sejak tahun 1980-an unsur jampi ditinggalkan berikutan perkembangan agama Islam.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_9">
+                    <p class="question-text">9. Apakah badan rasmi negeri yang melarang penggunaan unsur spiritual mistik lama ini?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_9" value="A"> A. Jabatan Perhutanan Sabah</label>
+                        <label class="option-label"><input type="radio" name="ans3_9" value="B"> B. Jabatan Agama Islam di Negeri Sabah</label>
+                        <label class="option-label"><input type="radio" name="ans3_9" value="C"> C. Kementerian Pelancongan Malaysia</label>
+                        <label class="option-label"><input type="radio" name="ans3_9" value="D"> D. Majlis Keselamatan Negara</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_9', 'B', 'Betul! Dilarang atas ketetapan Jabatan Agama Islam Negeri Sabah.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_10">
+                    <p class="question-text">10. Apakah fungsi utama pakaian harian tradisional yang dikenakan pada objek Bubu?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_10" value="A"> A. Memakai baju lelaki harian</label>
+                        <label class="option-label"><input type="radio" name="ans3_10" value="B"> B. Pemakaian baju wanita pada objek Bubu</label>
+                        <label class="option-label"><input type="radio" name="ans3_10" value="C"> C. Balutan kain kapan putih</label>
+                        <label class="option-label"><input type="radio" name="ans3_10" value="D"> D. Daun-daun nipah hijau</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_10', 'B', 'Betul! Elemen simbolik unik ialah pemakaian baju wanita pada Bubu melambangkan pengabdian roh.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+                <div class="question-card" id="q3_11">
+                    <p class="question-text">11. Keseluruhan ensembel alat muzik pengiring secara kolektif dikenali dengan gelaran apa?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_11" value="A"> A. Gamelan</label>
+                        <label class="option-label"><input type="radio" name="ans3_11" value="B"> B. Bagandang (pemain Bagandang)</label>
+                        <label class="option-label"><input type="radio" name="ans3_11" value="C"> C. Keroncong</label>
+                        <label class="option-label"><input type="radio" name="ans3_11" value="D"> D. Caklempong</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_11', 'B', 'Betul! Ensembel kolektif ini dikenali sebagai kumpulan Bagandang.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_12">
+                    <p class="question-text">12. Apakah nama alat muzik tradisional sejenis Kulintangan dalam ensembel tersebut?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_12" value="A"> A. Canang</label>
+                        <label class="option-label"><input type="radio" name="ans3_12" value="B"> B. Tagongo</label>
+                        <label class="option-label"><input type="radio" name="ans3_12" value="C"> C. Tatawak</label>
+                        <label class="option-label"><input type="radio" name="ans3_12" value="D"> D. Nafiri</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_12', 'B', 'Betul! Tagongo bermaksud instrumen kulintangan tradisi Bisaya.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_13">
+                    <p class="question-text">13. Tatawak merujuk kepada jenis instrumen muzik yang mana?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_13" value="A"> A. Seruling kayu</label>
+                        <label class="option-label"><input type="radio" name="ans3_13" value="B"> B. Gong kecil</label>
+                        <label class="option-label"><input type="radio" name="ans3_13" value="C"> C. Gendang panjang</label>
+                        <label class="option-label"><input type="radio" name="ans3_13" value="D"> D. Gasing berpusing</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_13', 'B', 'Betul! Tatawak ialah jenis alat muzik gong kecil.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_14">
+                    <p class="question-text">14. Bagaimanakah sifat bentuk variasi ragam gerak tari Alai Bubu dilaksanakan?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_14" value="A"> A. Berstruktur ketat mengikut kod istana</label>
+                        <label class="option-label"><input type="radio" name="ans3_14" value="B"> B. Bersifat spontan tanpa struktur variasi kaku</label>
+                        <label class="option-label"><input type="radio" name="ans3_14" value="C"> C. Hanya boleh menari duduk lentang</label>
+                        <label class="option-label"><input type="radio" name="ans3_14" value="D"> D. Melompat pagar tiang</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_14', 'B', 'Betul! Gerak tarinya bersifat spontan hasil interaksi penari-audiens.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_15">
+                    <p class="question-text">15. Apakah makna simbolik perubahan rentak muzik yang laju?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_15" value="A"> A. Menandakan majlis telah tamat</label>
+                        <label class="option-label"><input type="radio" name="ans3_15" value="B"> B. Melambangkan kehadiran entiti semangat halus menguasai Bubu</label>
+                        <label class="option-label"><input type="radio" name="ans3_15" value="C"> C. Isyarat kebakaran kecemasan</label>
+                        <label class="option-label"><input type="radio" name="ans3_15" value="D"> D. Makanan hidangan sudah siap</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_15', 'B', 'Betul! Rentak laju melambangkan kehadiran tenaga semangat menguasai tubuh Bubu.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_16">
+                    <p class="question-text">16. Apakah makna simbolik perubahan rentak muzik yang bertukar perlahan?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_16" value="A"> A. Penari sedang keletihan</label>
+                        <label class="option-label"><input type="radio" name="ans3_16" value="B"> B. Mencerminkan ruang komunikasi antara alam nyata dan alam ghaib</label>
+                        <label class="option-label"><input type="radio" name="ans3_16" value="C"> C. Arahan untuk audiens pulang</label>
+                        <label class="option-label"><input type="radio" name="ans3_16" value="D"> D. Upacara pertukaran baju</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_16', 'B', 'Betul! Rentak perlahan mencerminkan ruang komunikasi mistik dikelolai Babalian.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_17">
+                    <p class="question-text">17. Bahan apakah yang dibakar dalam ritual lama untuk menjampi tubuh Bubu?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_17" value="A"> A. Daun pandan</label>
+                        <label class="option-label"><input type="radio" name="ans3_17" value="B"> B. Kemenyan</label>
+                        <label class="option-label"><input type="radio" name="ans3_17" value="C"> C. Kayu manis</label>
+                        <label class="option-label"><input type="radio" name="ans3_17" value="D"> D. Kertas kuning</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_17', 'B', 'Betul! Kemenyan dibakar sebagai elemen penting menjampi tubuh Bubu.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_18">
+                    <p class="question-text">18. Apakah fungsi evolusi peranan moden tarian ini bagi kaum Bisaya sekarang?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_18" value="A"> A. Ritual mengubati penyakit mistik semata-mata</label>
+                        <label class="option-label"><input type="radio" name="ans3_18" value="B"> B. Persembahan seni warisan ikonik sosial (perkahwinan/festival)</label>
+                        <label class="option-label"><input type="radio" name="ans3_18" value="C"> C. Pertandingan mencari harta karun</label>
+                        <label class="option-label"><input type="radio" name="ans3_18" value="D"> D. Sesi latihan fizikal sukan</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_18', 'B', 'Betul! Kini berkembang sebagai ikon budaya dalam perayaan dan majlis sosial.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_19">
+                    <p class="question-text">19. Selain gambus, alat bertali apakah yang mengiringi tarian Alai Bubu?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_19" value="A"> A. Biola moden</label>
+                        <label class="option-label"><input type="radio" name="ans3_19" value="B"> B. Gambus dan ensembel gong</label>
+                        <label class="option-label"><input type="radio" name="ans3_19" value="C"> C. Gitar elektrik</label>
+                        <label class="option-label"><input type="radio" name="ans3_19" value="D"> D. Ukulele kecil</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_19', 'B', 'Betul! Diiringi instrumen utama gambus dan ensembel gong.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+                <div class="question-card" id="q3_20">
+                    <p class="question-text">20. Mantera lama yang dahulunya mengandungi jampi kini berfungsi sebagai apa dalam persembahan moden?</p>
+                    <div class="options-container">
+                        <label class="option-label"><input type="radio" name="ans3_20" value="A"> A. Kod rahsia tentera</label>
+                        <label class="option-label"><input type="radio" name="ans3_20" value="B"> B. Hanya dilagukan sebagai pantun tari / seni persembahan murni</label>
+                        <label class="option-label"><input type="radio" name="ans3_20" value="C"> C. Bacaan doa rasmi keagamaan</label>
+                        <label class="option-label"><input type="radio" name="ans3_20" value="D"> D. Peraturan undang-undang bertulis</label>
+                    </div>
+                    <button class="check-btn" onclick="checkAnswer('q3_20', 'B', 'Betul! Kini sekadar dilagukan semula sebagai seni bebas jampi serapah.', 'Salah. Jawapan betul ialah B.')">Semak Jawapan</button>
+                    <div class="feedback-box"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Fungsi Penukaran Tab Menu
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Fungsi Semakan Jawapan Kuiz Interaktif
+        function checkAnswer(cardId, correctAnswer, correctText, incorrectText) {
+            var card = document.getElementById(cardId);
+            var selectedOption = card.querySelector('input[type="radio"]:checked');
+            var feedbackBox = card.querySelector('.feedback-box');
+
+            if (!selectedOption) {
+                alert("Sila pilih satu jawapan dahulu sebelum menyemak!");
+                return;
+            }
+
+            // Padam status kelas lama
+            feedbackBox.classList.remove('correct', 'incorrect');
+
+            if (selectedOption.value === correctAnswer) {
+                feedbackBox.innerHTML = "<strong>Tahniah!</strong> " + correctText;
+                feedbackBox.classList.add('correct');
+            } else {
+                feedbackBox.innerHTML = "<strong>Cuba Lagi!</strong> " + incorrectText;
+                feedbackBox.classList.add('incorrect');
+            }
+        }
+    </script>
+</body>
+</html>
